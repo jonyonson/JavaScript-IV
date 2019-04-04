@@ -28,6 +28,10 @@ class Instructor extends Person {
   grade(student, subject) {
     console.log(`${student.name} receives a perfect score on ${subject}`);
   }
+
+  adjustGrade(student) {
+    student.grade = Math.floor(Math.random() * 100) + 1;
+  }
 }
 
 class ProjectManager extends Instructor {
@@ -52,6 +56,7 @@ class Student extends Person {
     this.previousBackground = obj.previousBackground;
     this.className = obj.className;
     this.favSubjects = obj.favSubjects;
+    this.grade = obj.grade;
   }
 
   listsSubjects() {
@@ -67,6 +72,19 @@ class Student extends Person {
   sprintChallenge(subject) {
     console.log(`${this.name} has begun sprint challenge on ${subject}`);
   }
+
+  graduate() {
+    if (this.grade >= 70) {
+      console.log(`Congratulations ${this.name}! Your grade of ${this.grade} qualifies you for graduation.`);
+    } else {
+      const oldGrade = this.grade;
+      console.log(`${this.name} has a current grade of ${this.grade}%.`);
+      console.log(`Grading more of ${this.name}'s assignments...`);
+      jerry.adjustGrade(this);
+      console.log(`${this.name}'s grade has changed by ${this.grade - oldGrade} percentage points.`);
+      return this.graduate();
+    }
+  }
 }
 
 const jonathan = new Student({
@@ -77,6 +95,7 @@ const jonathan = new Student({
   previousBackground: 'Poker',
   className: 'web19',
   favSubjects: ['JavaScript', 'React', 'Computer Science'],
+  grade: 50,
 });
 
 const bob = new Student({
@@ -87,6 +106,7 @@ const bob = new Student({
   previousBackground: 'accounting',
   classname: 'web18',
   favSubjects: ['Node', 'Back end'],
+  grade: 60,
 });
 
 console.log('\n');
@@ -154,3 +174,9 @@ console.log(jerry);
 console.log(newman);
 newman.standUp('web19_newman');
 jerry.debugsCode(bob, 'Applied JavaScript');
+
+console.log('\n');
+console.log('================= GRADUATION =================');
+jonathan.graduate();
+console.log('\n');
+bob.graduate();
